@@ -12,6 +12,20 @@ namespace SuiviVaccinCovid
         public string NAMPatient { get; set; }
         public string Type { get; set; }
 
+        public override bool Equals(object obj)
+        {
+            return obj is Vaccin vaccin &&
+                   VaccinId == vaccin.VaccinId &&
+                   Date == vaccin.Date &&
+                   NAMPatient == vaccin.NAMPatient &&
+                   Type == vaccin.Type;
+        }
+
+        public override int GetHashCode()
+        {
+            return HashCode.Combine(VaccinId, Date, NAMPatient, Type);
+        }
+
         public override string ToString()
         {
             return $" Vaccin #{VaccinId} ({Type}), adiminstré le {Date} à {NAMPatient}";
@@ -26,7 +40,7 @@ namespace SuiviVaccinCovid
             => options.UseSqlServer("Server=(localdb)\\MSSQLLocalDB;Database=VaccinBD;Trusted_Connection=True;");
     }
 
-    class Program
+    public class Program
     {
         static void Main(string[] args)
         {
@@ -35,7 +49,7 @@ namespace SuiviVaccinCovid
 
             VaccinContext context = new VaccinContext();
 
-            p.AjouterVaccin(context, "SIOA95032911", "Pfizer");
+            p.AjouterVaccin(context, "LAPM12345678", "Pfizer");
 
             Vaccin lePlusRecent = p.LePlusRecent(context.Vaccins);
             Console.WriteLine(lePlusRecent);
@@ -65,9 +79,14 @@ namespace SuiviVaccinCovid
             context.SaveChanges();
         }
 
-
         public void AjouterVaccin(VaccinContext contexte, string nam, string type)
         {
+            var memePatient = contexte.Vaccins.Where(v => v.NAMPatient == nam);
+            if (memePatient.Count() > 1)
+                throw new ArgumentException("Patient déjà vacciné deux fois");
+            if (memePatient.Count() == 1 && memePatient.First().Type != type)
+                throw new ArgumentException("Un patient ne peut pas recevoir deux types de vaccins");
+
             Vaccin v = new Vaccin
             {
                 NAMPatient = nam,
