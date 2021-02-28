@@ -26,7 +26,7 @@ namespace SuiviVaccinCovid
             => options.UseSqlServer("Server=(localdb)\\MSSQLLocalDB;Database=VaccinBD;Trusted_Connection=True;");
     }
 
-    class Program
+    public class Program
     {
         static void Main(string[] args)
         {
@@ -64,7 +64,6 @@ namespace SuiviVaccinCovid
 
             context.SaveChanges();
         }
-
 
         public void AjouterVaccin(VaccinContext contexte, string nam, string type)
         {
