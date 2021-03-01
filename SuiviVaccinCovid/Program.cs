@@ -15,7 +15,7 @@ namespace SuiviVaccinCovid
             p.Contexte = new VaccinContext();
             p.Peupler();
 
-            p.EnregistrerVaccin("LAPM12345678", "Pfizer");
+            VaccinContext context = new VaccinContext();
 
             Vaccin lePlusRecent = p.LePlusRecent();
             Console.WriteLine(lePlusRecent);
@@ -46,7 +46,7 @@ namespace SuiviVaccinCovid
             }
         }
 
-        public void EnregistrerVaccin(string nam, string type)
+        public void AjouterVaccin(VaccinContext contexte, string nam, string type)
         {
             var memePatient = Contexte.Vaccins.Where(v => v.NAMPatient == nam);
             if (memePatient.Count() > 1)
