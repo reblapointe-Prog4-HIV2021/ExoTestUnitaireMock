@@ -44,7 +44,7 @@ namespace SuiviVaccinCovid
             }
         }
 
-        public void EnregistrerVaccin(VaccinContext contexte, string nam, string type)
+        public void EnregistrerVaccin(string nam, string type)
         {
             var memePatient = Contexte.Vaccins.Where(v => v.NAMPatient == nam);
             if (memePatient.Count() > 1)
