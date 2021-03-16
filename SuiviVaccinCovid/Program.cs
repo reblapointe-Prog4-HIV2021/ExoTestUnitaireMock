@@ -58,7 +58,7 @@ namespace SuiviVaccinCovid
                 Type = type,
                 Date = DateTime.Now
             };
-            Contexte.Add(v);
+            Contexte.Vaccins.Add(v);
             Contexte.SaveChanges();
         }
 
